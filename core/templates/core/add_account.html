@@ -1,0 +1,20 @@
+{% extends 'core/base.html' %}
+{% block title %}Add New Account - CashMate{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Add New Account</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="name" class="form-label">Account Name</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+        <div class="mb-3">
+            <label for="initial_balance" class="form-label">Initial Balance</label>
+            <input type="number" step="0.01" class="form-control" id="initial_balance" name="initial_balance" value="0.00" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Save Account</button>
+        <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

@@ -7,8 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.db.models import Sum
 from decimal import Decimal
-from .models import Transaction, Category, Loan
-from .forms import TransactionForm, CategoryForm, LoanForm
+from .models import Transaction, Category, Debt
+from .forms import TransactionForm, CategoryForm, DebtForm
 
 # Homepage / Landing Page View
 def landing_page(request):
@@ -118,15 +118,15 @@ def manage_categories_view(request):
 @login_required
 def manage_loans_view(request):
     if request.method == 'POST':
-        form = LoanForm(request.POST)
+        form = DebtForm(request.POST)
         if form.is_valid():
             loan = form.save(commit=False)
             loan.user = request.user
             loan.save()
             return redirect('manage_loans')
 
-    form = LoanForm()
-    loans = Loan.objects.filter(user=request.user).order_by('is_repaid', '-date_lent')
+    form = DebtForm()
+    loans = Debt.objects.filter(user=request.user).order_by('is_repaid', '-date_lent')
     
     context = {
         'form': form,
@@ -137,7 +137,7 @@ def manage_loans_view(request):
 # Mark Loan as Repaid View
 @login_required
 def mark_loan_as_repaid_view(request, pk):
-    loan = get_object_or_404(Loan, pk=pk, user=request.user)
+    loan = get_object_or_404(Debt, pk=pk, user=request.user)
     
     if request.method == 'POST':
         loan.is_repaid = True

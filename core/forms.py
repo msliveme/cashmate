@@ -1,15 +1,15 @@
 # core/forms.py
 
 from django import forms
-from .models import Transaction, Category
+from .models import Transaction, Category, Debt
 
 class TransactionForm(forms.ModelForm):
     class Meta:
         model = Transaction
-        fields = ['type', 'amount', 'category', 'date', 'description']
+        fields = ['transaction_type', 'amount', 'category', 'date', 'description']
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
-            'type': forms.Select(attrs={'class': 'form-control'}),
+            'transaction_type': forms.Select(attrs={'class': 'form-control'}),
             'amount': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'e.g., 500.00'}),
             'category': forms.Select(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'e.g., Monthly grocery shopping'}),
@@ -35,18 +35,18 @@ class CategoryForm(forms.ModelForm):
         # core/forms.py
 
 # ... (আগের import গুলো থাকবে)
-from .models import Transaction, Category, Loan # Loan মডেলটি import করুন
 
 # ... (আগের TransactionForm এবং CategoryForm থাকবে) ...
 
 # --- নতুন লোন ফর্মটি নিচে যোগ করুন ---
-class LoanForm(forms.ModelForm):
+class DebtForm(forms.ModelForm):
     class Meta:
-        model = Loan
-        # 'user' এবং 'is_repaid' ফিল্ড দুটি ফর্ম থেকে বাদ দেওয়া হয়েছে, কারণ এগুলো স্বয়ংক্রিয়ভাবে সেট হবে
-        fields = ['person_name', 'amount', 'date_lent']
+        model = Debt
+        # 'user' এবং 'is_settled' ফিল্ড দুটি ফর্ম থেকে বাদ দেওয়া হয়েছে, কারণ এগুলো স্বয়ংক্রিয়ভাবে সেট হবে
+        fields = ['person_name', 'amount', 'debt_type', 'due_date']
         widgets = {
             'person_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': "Person's Name"}),
             'amount': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Loan Amount'}),
-            'date_lent': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'debt_type': forms.Select(attrs={'class': 'form-control'}),
+            'due_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
         }

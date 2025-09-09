@@ -9,11 +9,19 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="/">CashMate</a>
+            <a class="navbar-brand" href="/"><b>CashMate</b></a>
+            <div class="d-flex">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'dashboard' %}" class="btn btn-outline-light me-2">Dashboard</a>
+                    <a href="{% url 'logout' %}" class="btn btn-light">Logout</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-light">Login</a>
+                {% endif %}
+            </div>
         </div>
     </nav>
 
-    <main class="container mt-4">
+    <main class="container-fluid p-0">
         {% block content %}
         {% endblock %}
     </main>

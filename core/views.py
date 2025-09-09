@@ -4,7 +4,7 @@ from .models import Account, Transaction
 from django.db.models import Sum, DecimalField
 
 def index(request):
-    return redirect('dashboard')
+    return render(request, 'core/landing_page.html')
 
 @login_required
 def dashboard(request):

@@ -9,6 +9,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['cashmate.dupno.com']
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -83,3 +84,10 @@ STATIC_URL = 'static/'
 LOGOUT_REDIRECT_URL = '/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+GS = {
+    "site_title": "CashMate Admin",
+    "site_header": "CashMate",
+    "site_brand": "CashMate",
+    "welcome_sign": "Welcome to the CashMate Admin",
+    "copyright": "CashMate Ltd.",
+}

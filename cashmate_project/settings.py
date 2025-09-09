@@ -6,7 +6,9 @@ SECRET_KEY = 'django-insecure-placeholder-for-cashmate'
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['cashmate.dupno.com']
+ALLOWED_HOSTS = ["cashmate.dupno.com", "91.99.167.26", "localhost"]
+
+CSRF_TRUSTED_ORIGINS = ["https://cashmate.dupno.com", "http://cashmate.dupno.com"]
 
 INSTALLED_APPS = [
     'jazzmin',
@@ -83,8 +85,8 @@ USE_I1N = True
 
 USE_TZ = True
 
-STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'static'
+STATIC_URL = "/static/"
+STATIC_ROOT = "/var/www/cashmate/staticfiles"
 
 # For production, run: python manage.py collectstatic
 

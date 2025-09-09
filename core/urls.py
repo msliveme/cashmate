@@ -1,11 +1,26 @@
+# core/urls.py
+
 from django.urls import path
 from . import views
 
+# এই ফাইলটি URL এবং View ফাংশনের মধ্যে সংযোগ স্থাপন করে
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('dashboard/', views.dashboard, name='dashboard'),
-    path('add-account/', views.add_account, name='add_account'),
-    path('register/', views.register, name='register'),
-    path('account/<int:account_id>/transactions/', views.view_transactions, name='view_transactions'),
-    path('account/<int:account_id>/add_transaction/', views.add_transaction, name='add_transaction'),
+    # --- সাধারণ পেজ ---
+    path('', views.landing_page, name='landing_page'),
+    path('dashboard/', views.dashboard_view, name='dashboard'),
+
+    # --- ইউজার অ্যাকাউন্ট সম্পর্কিত ---
+    path('register/', views.register_view, name='register'),
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
+
+    # --- লেনদেন (Transaction) সম্পর্কিত ---
+    path('add-transaction/', views.add_transaction_view, name='add_transaction'),
+
+    # --- ক্যাটাগরি (Category) সম্পর্কিত ---
+    path('categories/', views.manage_categories_view, name='manage_categories'),
+
+    # --- লোন (Loan) সম্পর্কিত ---
+    path('loans/', views.manage_loans_view, name='manage_loans'),
+    path('loans/<int:pk>/mark-repaid/', views.mark_loan_as_repaid_view, name='mark_loan_repaid'),
 ]

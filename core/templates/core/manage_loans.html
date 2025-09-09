@@ -1,0 +1,163 @@
+{% extends "core/base.html" %}
+
+{% block title %}Manage Loans - CashMate{% endblock %}
+
+{% block content %}
+
+<style>
+    /* আপনার দেওয়া রঙের প্যালেট অনুযায়ী কাস্টম স্টাইল */
+    :root {
+        --classic-blue: #288cfa;
+        --dark-blue: #103766;
+        --performance-green: #2E865F;
+        --light-gray-bg: #F5F5F5;
+        --dark-text: #333333;
+        --pending-yellow: #ffc107;
+        --success-green: #198754;
+    }
+
+    .card-header-custom {
+        background-color: white;
+        color: var(--dark-blue);
+        border-bottom: 2px solid var(--light-gray-bg);
+        font-weight: 600;
+        padding: 1rem 1.25rem;
+    }
+
+    .btn-classic-blue {
+        background-color: var(--classic-blue);
+        color: white;
+        border: none;
+        transition: background-color 0.3s ease;
+        font-weight: 500;
+    }
+
+    .btn-classic-blue:hover {
+        background-color: var(--dark-blue);
+        color: white;
+    }
+
+    /* ফেরত দেওয়া লোনের জন্য স্টাইল */
+    .repaid-row {
+        background-color: #f8f9fa; /* হালকা ধূসর */
+    }
+
+    .repaid-row td {
+        text-decoration: line-through;
+        color: #6c757d; /* মিউটেড টেক্সট */
+    }
+
+    .status-badge {
+        font-size: 0.8rem;
+        font-weight: 600;
+        padding: 0.4em 0.7em;
+    }
+
+    .status-pending {
+        background-color: var(--pending-yellow);
+        color: var(--dark-text);
+    }
+
+    .status-repaid {
+        background-color: var(--performance-green);
+        color: white;
+    }
+
+</style>
+
+<div class="container py-4">
+    <!-- পেজের শিরোনাম -->
+    <div class="text-center mb-5">
+        <h2 class="fw-bold" style="color: var(--dark-blue);">Loan Tracker</h2>
+        <p class="text-muted fs-5">Keep a clear record of money you've lent to others.</p>
+    </div>
+
+    <div class="row g-4">
+        <!-- বাম কলাম: নতুন লোন যোগ করার ফর্ম -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header card-header-custom">
+                    <i class="bi bi-plus-circle-fill me-2"></i> Add New Loan
+                </div>
+                <div class="card-body p-4">
+                    <form method="post" action="{% url 'manage_loans' %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="{{ form.person_name.id_for_label }}" class="form-label">Lent To</label>
+                            {{ form.person_name }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.amount.id_for_label }}" class="form-label">Amount ($)</label>
+                            {{ form.amount }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.date_lent.id_for_label }}" class="form-label">Date Lent</label>
+                            {{ form.date_lent }}
+                        </div>
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-classic-blue py-2">Save Loan Record</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- ডান কলাম: বিদ্যমান লোনের তালিকা -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header card-header-custom">
+                    <i class="bi bi-list-ul me-2"></i> My Loan Records
+                </div>
+                <div class="card-body p-0"> <!-- p-0 to make table fit nicely -->
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead>
+                                <tr class="table-light">
+                                    <th scope="col" class="ps-3">Person</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Date Lent</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col" class="text-end pe-3">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for loan in loans %}
+                                <tr class="{% if loan.is_repaid %}repaid-row{% endif %}">
+                                    <td class="ps-3 fw-medium">{{ loan.person_name }}</td>
+                                    <td>${{ loan.amount|floatformat:2 }}</td>
+                                    <td>{{ loan.date_lent }}</td>
+                                    <td>
+                                        {% if loan.is_repaid %}
+                                            <span class="badge rounded-pill status-repaid">Repaid</span>
+                                        {% else %}
+                                            <span class="badge rounded-pill status-pending">Pending</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-end pe-3">
+                                        {% if not loan.is_repaid %}
+                                            <form method="post" action="{% url 'mark_loan_repaid' loan.pk %}" class="d-inline">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-sm btn-outline-success" title="Mark as Repaid">
+                                                    <i class="bi bi-check-circle-fill"></i> Mark Repaid
+                                                </button>
+                                            </form>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-center p-5 text-muted">
+                                        You have no loan records. <br>
+                                        Use the form on the left to add one!
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

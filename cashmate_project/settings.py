@@ -6,7 +6,7 @@ SECRET_KEY = 'django-insecure-placeholder-for-cashmate'
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['cashmate.dupno.com']
 
 INSTALLED_APPS = [
     'django.contrib.admin',

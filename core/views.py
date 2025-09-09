@@ -34,7 +34,7 @@ def add_account(request):
             initial_balance=initial_balance
         )
         return redirect('dashboard')
-    return render(request, 'core/templates/core/add_account.html')
+    return render(request, 'core/add_account.html')
 
 def register(request):
     if request.method == 'POST':

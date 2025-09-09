@@ -59,11 +59,11 @@ def dashboard_view(request):
     transactions = Transaction.objects.filter(user=request.user)
 
     # মোট আয় হিসাব করা
-    income_result = transactions.filter(type='Income').aggregate(Sum('amount'))
+    income_result = transactions.filter(transaction_type='INCOME').aggregate(Sum('amount'))
     total_income = income_result['amount__sum'] or Decimal('0.0')
 
     # মোট ব্যয় হিসাব করা
-    expense_result = transactions.filter(type='Expense').aggregate(Sum('amount'))
+    expense_result = transactions.filter(transaction_type='EXPENSE').aggregate(Sum('amount'))
     total_expense = expense_result['amount__sum'] or Decimal('0.0')
     
     # বর্তমান ব্যালেন্স হিসাব করা

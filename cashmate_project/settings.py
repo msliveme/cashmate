@@ -4,7 +4,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-placeholder-for-cashmate'
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['cashmate.dupno.com']
 
@@ -51,8 +51,12 @@ WSGI_APPLICATION = 'cashmate_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'cashmate_db',
+        'USER': 'cashmate_user',
+        'PASSWORD': '018874Bl',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
 
@@ -81,6 +85,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'static'
+
+# For production, run: python manage.py collectstatic
 
 
 LOGIN_REDIRECT_URL = '/dashboard/'

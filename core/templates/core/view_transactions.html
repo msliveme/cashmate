@@ -1,0 +1,52 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Transactions for {{ account.name }} - CashMate{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Transactions for <span class="text-primary">{{ account.name }}</span></h2>
+        <a href="{% url 'add_transaction' account.id %}" class="btn btn-primary">Add New Transaction</a>
+    </div>
+
+    {% if transactions %}
+    <div class="card shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in transactions %}
+                    <tr>
+                        <td>{{ transaction.date|date:"Y-m-d" }}</td>
+                        <td>
+                            <span class="badge {% if transaction.transaction_type == 'INCOME' %}bg-success{% else %}bg-danger{% endif %}">
+                                {{ transaction.transaction_type|capfirst }}
+                            </span>
+                        </td>
+                        <td>{{ transaction.category.name|default:"--" }}</td>
+                        <td class="fw-bold {% if transaction.transaction_type == 'INCOME' %}text-success{% else %}text-danger{% endif %}">
+                            ৳ {{ transaction.amount|floatformat:2 }}
+                        </td>
+                        <td>{{ transaction.description|default:"--" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <div class="text-center p-5 border rounded">
+        <h4>No transactions yet.</h4>
+        <p>Click 'Add New Transaction' to get started.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -80,4 +80,6 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+LOGOUT_REDIRECT_URL = '/'
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

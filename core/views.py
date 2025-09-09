@@ -5,6 +5,8 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+from django.db.models import Sum
+from decimal import Decimal
 from .models import Transaction, Category, Loan
 from .forms import TransactionForm, CategoryForm, LoanForm
 
@@ -50,12 +52,31 @@ def logout_view(request):
     logout(request)
     return redirect('landing_page')
 
-# Dashboard View
+# Dashboard View (Updated and Fixed)
 @login_required
 def dashboard_view(request):
-    transactions = Transaction.objects.filter(user=request.user).order_by('-date')[:10]
+    # বর্তমান ইউজারের সব লেনদেন নিয়ে আসা
+    transactions = Transaction.objects.filter(user=request.user)
+
+    # মোট আয় হিসাব করা
+    income_result = transactions.filter(type='Income').aggregate(Sum('amount'))
+    total_income = income_result['amount__sum'] or Decimal('0.0')
+
+    # মোট ব্যয় হিসাব করা
+    expense_result = transactions.filter(type='Expense').aggregate(Sum('amount'))
+    total_expense = expense_result['amount__sum'] or Decimal('0.0')
+    
+    # বর্তমান ব্যালেন্স হিসাব করা
+    current_balance = total_income - total_expense
+
+    # সাম্প্রতিক ১০টি লেনদেন
+    recent_transactions = transactions.order_by('-date')[:10]
+    
     context = {
-        'transactions': transactions
+        'total_income': total_income,
+        'total_expense': total_expense,
+        'current_balance': current_balance,
+        'transactions': recent_transactions,
     }
     return render(request, 'core/dashboard.html', context)
 
@@ -93,12 +114,9 @@ def manage_categories_view(request):
     }
     return render(request, 'core/manage_categories.html', context)
 
-# --- নতুন দুটি View ফাংশন নিচে যোগ করা হয়েছে ---
-
-# ১. লোন ম্যানেজমেন্টের মূল পেজ
+# Loan Management View
 @login_required
 def manage_loans_view(request):
-    # নতুন লোন যোগ করার ফর্ম হ্যান্ডেল করা
     if request.method == 'POST':
         form = LoanForm(request.POST)
         if form.is_valid():
@@ -107,10 +125,7 @@ def manage_loans_view(request):
             loan.save()
             return redirect('manage_loans')
 
-    # GET রিকোয়েস্টের জন্য (পেজটি প্রথমবার লোড হলে)
     form = LoanForm()
-    # বর্তমান ইউজারের সব লোন ডেটাবেস থেকে নিয়ে আসা
-    # যেগুলো ফেরত হয়নি (unrepaid) সেগুলো আগে দেখাবে
     loans = Loan.objects.filter(user=request.user).order_by('is_repaid', '-date_lent')
     
     context = {
@@ -119,16 +134,14 @@ def manage_loans_view(request):
     }
     return render(request, 'core/manage_loans.html', context)
 
-# ২. লোনকে "Repaid" হিসেবে মার্ক করার জন্য
+# Mark Loan as Repaid View
 @login_required
 def mark_loan_as_repaid_view(request, pk):
-    # নির্দিষ্ট লোনটি খুঁজে বের করা এবং নিশ্চিত করা যে এটি বর্তমান ইউজারেরই
     loan = get_object_or_404(Loan, pk=pk, user=request.user)
     
-    # শুধুমাত্র POST রিকোয়েস্ট গ্রহণ করা হবে নিরাপত্তার জন্য
     if request.method == 'POST':
         loan.is_repaid = True
-        loan.date_repaid = timezone.now().date() # আজকের তারিখে ফেরত হিসেবে ধরা হবে
+        loan.date_repaid = timezone.now().date()
         loan.save()
     
-    return redirect('manage_loans') # আগের পেজে ফেরত পাঠানো
+    return redirect('manage_loans')

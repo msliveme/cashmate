@@ -1,93 +1,62 @@
 {% extends 'core/base.html' %}
 
-{% block title %}CashMate - Smart Personal Finance Management{% endblock %}
+{% block title %}CashMate - Take Control of Your Finances{% endblock %}
 
 {% block content %}
 <style>
-    .hero-section {
-        background: #f8f9fa;
-        padding: 6rem 1.5rem;
+    .hero {
+        background: linear-gradient(45deg, #007bff, #00d2ff);
+        color: white;
+        padding: 80px 20px;
         text-align: center;
     }
-    .hero-section h1 {
-        font-weight: 700;
-        color: #333;
+    .feature-icon {
+        font-size: 3rem;
+        color: #007bff;
     }
-    .hero-section p {
-        font-size: 1.25rem;
-        color: #555;
-        max-width: 700px;
-        margin: 1rem auto;
+    .card {
+        border: none;
+        transition: transform 0.2s;
     }
-    .features-section {
-        padding: 4rem 1.5rem;
-    }
-    .feature-card {
-        border: 1px solid #e9ecef;
-        border-radius: 0.5rem;
-        padding: 2rem;
-        text-align: center;
-        transition: box-shadow 0.3s ease;
-    }
-    .feature-card:hover {
-        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
-    }
-    .feature-card h5 {
-        margin-top: 1rem;
-        font-weight: 600;
+    .card:hover {
+        transform: translateY(-5px);
     }
 </style>
 
-<div class="hero-section">
-    <h1 class="display-5">Smart Accounting Software for Your Personal Finances</h1>
-    <p class="lead">
-        CashMate is a powerful platform built for individuals. It offers advanced financial management and real-time insights to streamline your life and support your financial growth.
-    </p>
-    <a href="{% url 'register' %}" class="btn btn-primary btn-lg">Try CashMate for Free</a>
+<div class="hero rounded mb-5">
+    <h1 class="display-4 fw-bold">Your Financial Co-Pilot</h1>
+    <p class="lead">CashMate helps you track your spending, manage your accounts, and achieve your financial goals with ease.</p>
+    <a href="{% url 'login' %}" class="btn btn-light btn-lg">Get Started</a>
 </div>
 
-<div class="container features-section">
-    <div class="row text-center mb-5">
-        <div class="col-12">
-            <h2 class="fw-bold">Everything in One Place</h2>
-            <p class="lead text-muted">Manage your finances with a single, easy-to-use platform.</p>
-        </div>
-    </div>
-    <div class="row g-4">
-        <div class="col-md-6 col-lg-4">
-            <div class="feature-card h-100">
-                <h5>📊 Cash Management</h5>
-                <p>Get a clear, real-time view of your balances and transactions across all your accounts.</p>
+<div class="container">
+    <div class="row text-center g-4">
+        <h2 class="mb-4">Why CashMate?</h2>
+        <div class="col-md-4">
+            <div class="card shadow-sm p-3 h-100">
+                <div class="card-body">
+                    <div class="feature-icon mb-3">📊</div>
+                    <h5 class="card-title">All Accounts in One Place</h5>
+                    <p class="card-text">Securely connect all your bank accounts for a complete view of your financial life.</p>
+                </div>
             </div>
         </div>
-        <div class="col-md-6 col-lg-4">
-            <div class="feature-card h-100">
-                <h5>💸 Expense Management</h5>
-                <p>Track where your money is going with smart categorization and spending insights.</p>
+        <div class="col-md-4">
+            <div class="card shadow-sm p-3 h-100">
+                <div class="card-body">
+                    <div class="feature-icon mb-3">💸</div>
+                    <h5 class="card-title">Effortless Transaction Tracking</h5>
+                    <p class="card-text">Income or expense, we help you categorize every transaction automatically.</p>
+                </div>
             </div>
         </div>
-        <div class="col-md-6 col-lg-4">
-            <div class="feature-card h-100">
-                <h5>🎯 Smart Data & Insights</h5>
-                <p>Make better financial decisions with intelligent reports and summaries of your activity.</p>
-            </div>
-        </div>
-        <div class="col-md-6 col-lg-4">
-            <div class="feature-card h-100">
-                <h5>🔒 Data Security</h5>
-                <p>Your financial data is important. We ensure it is kept safe and secure at all times.</p>
-            </div>
-        </div>
-        <div class="col-md-6 col-lg-4">
-            <div class="feature-card h-100">
-                <h5>☁️ Cloud-Based</h5>
-                <p>Access your financial dashboard from anywhere, on any device, at any time.</p>
-            </div>
-        </div>
-        <div class="col-md-6 col-lg-4">
-            <div class="feature-card h-100">
-                <h5>🙌 Easy to Use</h5>
-                <p>A simple, intuitive interface designed to make personal finance management stress-free.</p>
+        <div class="col-md-4">
+            <div class="card shadow-sm p-3 h-100">
+                <div class="card-body">
+                    <div class="feature-icon mb-3">🎯</div>
+                    <h5 class="card-title">Debt & Asset Monitoring</h5>
+                    <p class="card-text">Keep an eye on what you own and what you owe to make smarter financial decisions.</p>
+                </div>
             </div>
         </div>
     </div>

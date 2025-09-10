@@ -5,7 +5,7 @@
 {% block content %}
 <style>
     .gradient-background {
-        background: #f4f7f6;
+        background: linear-gradient(45deg, var(--classic-blue), var(--dark-blue));
         padding: 4rem 0;
     }
     .register-card {
@@ -14,11 +14,9 @@
         box-shadow: 0 0.5rem 1.5rem rgba(0,0,0,.1);
     }
     .register-card .card-header {
-        background: linear-gradient(45deg, #007bff, #00d2ff);
-        color: white;
-        border-top-left-radius: 1rem;
-        border-top-right-radius: 1rem;
-        padding: 2rem;
+        background-color: transparent;
+        border-bottom: none;
+        padding: 2rem 2rem 0 2rem;
     }
     .form-control {
         border-radius: 0.5rem;
@@ -42,20 +40,7 @@
                     <div class="card-body p-5">
                         <form method="post">
                             {% csrf_token %}
-                            
-                            {% for field in form %}
-                                <div class="mb-3">
-                                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
-                                    <input type="{{ field.field.widget.input_type }}" name="{{ field.name }}" id="{{ field.id_for_label }}" class="form-control" required>
-                                    {% if field.help_text %}
-                                        <small class="form-text text-muted">{{ field.help_text|safe }}</small>
-                                    {% endif %}
-                                    {% for error in field.errors %}
-                                        <div class="alert alert-danger mt-1 p-2">{{ error }}</div>
-                                    {% endfor %}
-                                </div>
-                            {% endfor %}
-
+                            {{ form.as_p }}
                             <div class="d-grid mt-4">
                                 <button type="submit" class="btn btn-primary btn-lg">Sign Up</button>
                             </div>

@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
             name='is_settled',
         ),
         migrations.AddField(
-            model_name='debt',
+        model_name='debt',
             name='date_repaid',
             field=models.DateField(blank=True, null=True),
         ),

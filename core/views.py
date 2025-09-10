@@ -28,7 +28,7 @@ def register_view(request):
             return redirect('dashboard')
     else:
         form = UserRegisterForm()
-    return render(request, 'registration/register.html', {'form': form})
+    return render(request, 'registration/register.html')
 
 # User Login View
 def login_view(request):
@@ -45,7 +45,7 @@ def login_view(request):
                 return redirect('dashboard')
     else:
         form = AuthenticationForm()
-    return render(request, 'registration/login.html', {'form': form})
+    return render(request, 'registration/login.html')
 
 # User Logout View
 def logout_view(request):

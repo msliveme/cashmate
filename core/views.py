@@ -28,7 +28,7 @@ def register_view(request):
             return redirect('dashboard')
     else:
         form = UserCreationForm()
-    return render(request, 'core/registration/register.html', {'form': form})
+    return render(request, 'registration/register.html', {'form': form})
 
 # User Login View
 def login_view(request):
@@ -45,7 +45,7 @@ def login_view(request):
                 return redirect('dashboard')
     else:
         form = AuthenticationForm()
-    return render(request, 'core/registration/login.html', {'form': form})
+    return render(request, 'registration/login.html', {'form': form})
 
 # User Logout View
 def logout_view(request):
@@ -126,7 +126,7 @@ def manage_loans_view(request):
             return redirect('manage_loans')
 
     form = DebtForm()
-    loans = Debt.objects.filter(user=request.user).order_by('is_repaid', '-date_lent')
+    loans = Debt.objects.filter(user=request.user).order_by('is_settled', '-due_date')
     
     context = {
         'form': form,
@@ -140,7 +140,7 @@ def mark_loan_as_repaid_view(request, pk):
     loan = get_object_or_404(Debt, pk=pk, user=request.user)
     
     if request.method == 'POST':
-        loan.is_repaid = True
+        loan.is_settled = True
         loan.date_repaid = timezone.now().date()
         loan.save()
     

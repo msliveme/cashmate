@@ -1,8 +1,9 @@
+import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-placeholder-for-cashmate'
+SECRET_KEY = 'f915759255a437fa13a4b08215315f3b91f0c48525a76fbad2e3a1a1f5713f1b03e451842be597e9a07f302605efcfc3c2a6'
 
 DEBUG = False
 
@@ -23,6 +24,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -54,11 +56,11 @@ WSGI_APPLICATION = 'cashmate_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'cashmate_db',
-        'USER': 'cashmate_user',
-        'PASSWORD': '018874Bl',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'NAME': os.environ.get('DB_NAME', 'cashmate_db'),
+        'USER': os.environ.get('DB_USER', 'cashmate_user'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', '018874Bl'),
+        'HOST': os.environ.get('DB_HOST', '127.0.0.1'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
 
@@ -95,7 +97,7 @@ LOGIN_REDIRECT_URL = '/dashboard/'
 LOGOUT_REDIRECT_URL = '/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-GS = {
+JAZZMIN_SETTINGS = {
     "site_title": "CashMate Admin",
     "site_header": "CashMate",
     "site_brand": "CashMate",

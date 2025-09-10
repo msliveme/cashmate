@@ -1,18 +1,4 @@
-# Python
 __pycache__/
-*.py[cod]
-*$py.class
-
-# Environments
-.env
-.venv
-venv/
-env/
-
-# Django
+*.pyc
 db.sqlite3
-.DS_Store
-
-# Static files
-/static
-
+.env

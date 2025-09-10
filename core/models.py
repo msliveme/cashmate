@@ -37,7 +37,8 @@ class Debt(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     debt_type = models.CharField(max_length=8, choices=DEBT_TYPE_CHOICES)
     due_date = models.DateField(null=True, blank=True)
-    is_settled = models.BooleanField(default=False)
+    is_repaid = models.BooleanField(default=False)
+    date_repaid = models.DateField(null=True, blank=True)
 
     def __str__(self):
         return f"Debt with {self.person_name} - Amount: {self.amount}"

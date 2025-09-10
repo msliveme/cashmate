@@ -6,21 +6,23 @@
 {% block content %}
 <style>
     .hero {
-        background: linear-gradient(45deg, #007bff, #00d2ff);
+        background: linear-gradient(45deg, var(--classic-blue), var(--dark-blue));
         color: white;
-        padding: 80px 20px;
+        padding: 100px 20px;
         text-align: center;
     }
     .feature-icon {
         font-size: 3rem;
-        color: #007bff;
+        color: var(--classic-blue);
     }
     .card {
         border: none;
-        transition: transform 0.2s;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border-radius: 15px;
     }
     .card:hover {
-        transform: translateY(-5px);
+        transform: translateY(-10px);
+        box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
     }
 </style>
 
@@ -36,7 +38,7 @@
         <div class="col-md-4">
             <div class="card shadow-sm p-3 h-100">
                 <div class="card-body">
-                    <div class="feature-icon mb-3">📊</div>
+                    <div class="feature-icon mb-3"><i class="bi bi-graph-up-arrow"></i></div>
                     <h5 class="card-title">All Accounts in One Place</h5>
                     <p class="card-text">Securely connect all your bank accounts for a complete view of your financial life.</p>
                 </div>
@@ -45,7 +47,7 @@
         <div class="col-md-4">
             <div class="card shadow-sm p-3 h-100">
                 <div class="card-body">
-                    <div class="feature-icon mb-3">💸</div>
+                    <div class="feature-icon mb-3"><i class="bi bi-receipt-cutoff"></i></div>
                     <h5 class="card-title">Effortless Transaction Tracking</h5>
                     <p class="card-text">Income or expense, we help you categorize every transaction automatically.</p>
                 </div>
@@ -54,7 +56,7 @@
         <div class="col-md-4">
             <div class="card shadow-sm p-3 h-100">
                 <div class="card-body">
-                    <div class="feature-icon mb-3">🎯</div>
+                    <div class="feature-icon mb-3"><i class="bi bi-bullseye"></i></div>
                     <h5 class="card-title">Debt & Asset Monitoring</h5>
                     <p class="card-text">Keep an eye on what you own and what you owe to make smarter financial decisions.</p>
                 </div>

@@ -8,7 +8,7 @@ from django.utils import timezone
 from django.db.models import Sum
 from decimal import Decimal
 from .models import Transaction, Category, Debt
-from .forms import TransactionForm, CategoryForm, DebtForm
+from .forms import TransactionForm, CategoryForm, DebtForm, UserRegisterForm
 
 # Homepage / Landing Page View
 def landing_page(request):
@@ -21,13 +21,13 @@ def register_view(request):
     if request.user.is_authenticated:
         return redirect('dashboard')
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = UserRegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
             return redirect('dashboard')
     else:
-        form = UserCreationForm()
+        form = UserRegisterForm()
     return render(request, 'registration/register.html', {'form': form})
 
 # User Login View

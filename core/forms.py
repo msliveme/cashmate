@@ -1,7 +1,14 @@
 # core/forms.py
 
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from .models import Transaction, Category, Debt
+
+class UserRegisterForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        model = User
+        fields = ('username', 'email')
 
 class TransactionForm(forms.ModelForm):
     class Meta:

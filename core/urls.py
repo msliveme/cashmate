@@ -23,4 +23,7 @@ urlpatterns = [
     # --- লোন (Loan) সম্পর্কিত ---
     path('loans/', views.manage_loans_view, name='manage_loans'),
     path('loans/<int:pk>/mark-repaid/', views.mark_loan_as_repaid_view, name='mark_loan_repaid'),
+
+    # --- Account সম্পর্কিত ---
+    path('add-account/', views.add_account_view, name='add_account'),
 ]

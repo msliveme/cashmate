@@ -4,17 +4,23 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h2>Add Transaction to <span class="text-primary">{{ account.name }}</span></h2>
+    {% if account %}
+        <h2>Add Transaction to <span class="text-primary">{{ account.name }}</span></h2>
 
-    <div class="card shadow-sm mt-4">
-        <div class="card-body">
-            <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn btn-primary">Save Transaction</button>
-                <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancel</a>
-            </form>
+        <div class="card shadow-sm mt-4">
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary">Save Transaction</button>
+                    <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
         </div>
-    </div>
+    {% else %}
+        <div class="alert alert-warning" role="alert">
+            You don't have any accounts yet. Please <a href="{% url 'add_account' %}">create an account</a> before adding a transaction.
+        </div>
+    {% endif %}
 </div>
 {% endblock %}

@@ -7,14 +7,31 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.db.models import Sum
 from decimal import Decimal
-from .models import Transaction, Category, Debt
-from .forms import TransactionForm, CategoryForm, DebtForm, UserRegisterForm
+from .models import Transaction, Category, Debt, Account
+from .forms import TransactionForm, CategoryForm, DebtForm, UserRegisterForm, AccountForm
 
 # Homepage / Landing Page View
 def landing_page(request):
     if request.user.is_authenticated:
         return redirect('dashboard')
     return render(request, 'core/landing_page.html')
+
+# ... (other views)
+
+# Add Account View
+@login_required
+def add_account_view(request):
+    if request.method == 'POST':
+        form = AccountForm(request.POST)
+        if form.is_valid():
+            account = form.save(commit=False)
+            account.user = request.user
+            account.save()
+            return redirect('dashboard')
+    else:
+        form = AccountForm()
+    return render(request, 'core/add_account.html', {'form': form})
+
 
 import logging
 

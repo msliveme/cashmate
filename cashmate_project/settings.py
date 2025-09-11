@@ -5,7 +5,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'f915759255a437fa13a4b08215315f3b91f0c48525a76fbad2e3a1a1f5713f1b03e451842be597e9a07f302605efcfc3c2a6'
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["cashmate.dupno.com", "91.99.167.26", "localhost"]
 

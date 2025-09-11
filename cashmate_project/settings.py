@@ -5,7 +5,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'f915759255a437fa13a4b08215315f3b91f0c48525a76fbad2e3a1a1f5713f1b03e451842be597e9a07f302605efcfc3c2a6'
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["cashmate.dupno.com", "91.99.167.26", "localhost"]
 
@@ -53,21 +53,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'cashmate_project.wsgi.application'
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': os.environ.get('DB_NAME', 'cashmate_db'),
-#         'USER': os.environ.get('DB_USER', 'cashmate_user'),
-#         'PASSWORD': os.environ.get('DB_PASSWORD', '018874Bl'),
-#         'HOST': os.environ.get('DB_HOST', '127.0.0.1'),
-#         'PORT': os.environ.get('DB_PORT', '5432'),
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DB_NAME', 'cashmate_db'),
+        'USER': os.environ.get('DB_USER', 'cashmate_user'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', '018874Bl'),
+        'HOST': os.environ.get('DB_HOST', '127.0.0.1'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
 
@@ -110,4 +103,23 @@ JAZZMIN_SETTINGS = {
     "site_brand": "CashMate",
     "welcome_sign": "Welcome to the CashMate Admin",
     "copyright": "CashMate Ltd.",
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'debug.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
 }

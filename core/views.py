@@ -16,36 +16,50 @@ def landing_page(request):
         return redirect('dashboard')
     return render(request, 'core/landing_page.html')
 
+import logging
+
+logger = logging.getLogger(__name__)
+
+# ... (other imports)
+
 # User Registration View
 def register_view(request):
-    if request.user.is_authenticated:
-        return redirect('dashboard')
-    if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
+    try:
+        if request.user.is_authenticated:
             return redirect('dashboard')
-    else:
-        form = UserRegisterForm()
-    return render(request, 'registration/register.html')
+        if request.method == 'POST':
+            form = UserRegisterForm(request.POST)
+            if form.is_valid():
+                user = form.save()
+                login(request, user)
+                return redirect('dashboard')
+        else:
+            form = UserRegisterForm()
+        return render(request, 'registration/register.html', {'form': form})
+    except Exception as e:
+        logger.error(f"Error in register_view: {e}")
+        raise
 
 # User Login View
 def login_view(request):
-    if request.user.is_authenticated:
-        return redirect('dashboard')
-    if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('dashboard')
-    else:
-        form = AuthenticationForm()
-    return render(request, 'registration/login.html')
+    try:
+        if request.user.is_authenticated:
+            return redirect('dashboard')
+        if request.method == 'POST':
+            form = AuthenticationForm(request, data=request.POST)
+            if form.is_valid():
+                username = form.cleaned_data.get('username')
+                password = form.cleaned_data.get('password')
+                user = authenticate(username=username, password=password)
+                if user is not None:
+                    login(request, user)
+                    return redirect('dashboard')
+        else:
+            form = AuthenticationForm()
+        return render(request, 'registration/login.html', {'form': form})
+    except Exception as e:
+        logger.error(f"Error in login_view: {e}")
+        raise
 
 # User Logout View
 def logout_view(request):

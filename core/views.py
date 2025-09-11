@@ -73,8 +73,23 @@ def register_view(request):
         logger.error(f"Error in register_view: {e}")
         raise
 
+# core/views.py
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+from django.db.models import Sum
+from decimal import Decimal
+from .models import Transaction, Category, Debt, Account
+from .forms import TransactionForm, CategoryForm, DebtForm, UserRegisterForm, AccountForm
+
+# ... (other views)
+
 # User Login View
 def login_view(request):
+    print("Login view accessed") # Debugging print statement
     try:
         if request.user.is_authenticated:
             return redirect('dashboard')
@@ -93,6 +108,8 @@ def login_view(request):
     except Exception as e:
         logger.error(f"Error in login_view: {e}")
         raise
+
+# ... (rest of the file)
 
 # User Logout View
 def logout_view(request):

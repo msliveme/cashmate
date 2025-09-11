@@ -97,31 +97,39 @@ def dashboard_view(request):
 # Add Transaction View
 @login_required
 def add_transaction_view(request):
+    # Temporary workaround: get the user's first account
+    try:
+        account = request.user.account_set.first()
+    except AttributeError:
+        # Handle case where user has no accounts
+        account = None
+
     if request.method == 'POST':
         form = TransactionForm(request.POST, user=request.user)
         if form.is_valid():
             transaction = form.save(commit=False)
             transaction.user = request.user
+            transaction.account = account
             transaction.save()
             return redirect('dashboard')
     else:
         form = TransactionForm(user=request.user)
     
-    return render(request, 'core/add_transaction.html', {'form': form})
+    return render(request, 'core/add_transaction.html', {'form': form, 'account': account})
 
 # Manage Categories View
 @login_required
 def manage_categories_view(request):
     if request.method == 'POST':
-        form = CategoryForm(request.POST)
+        form = CategoryForm(request.POST, user=request.user)
         if form.is_valid():
             category = form.save(commit=False)
             category.user = request.user
             category.save()
             return redirect('manage_categories') 
 
-    form = CategoryForm()
-    categories = Category.objects.filter(user=request.user).order_by('name')
+    form = CategoryForm(user=request.user)
+    categories = Category.objects.filter(user=request.user, parent=None).order_by('name')
     context = {
         'form': form,
         'categories': categories

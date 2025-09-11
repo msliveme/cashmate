@@ -1,0 +1,11 @@
+<a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+    {{ category.name }}
+    <span class="badge bg-secondary rounded-pill">View</span>
+</a>
+{% if category.subcategories.all %}
+    <div class="list-group ms-4">
+        {% for subcategory in category.subcategories.all %}
+            {% include 'core/category_item.html' with category=subcategory %}
+        {% endfor %}
+    </div>
+{% endif %}

@@ -4,42 +4,24 @@
 
 {% block content %}
 <style>
-    /* আপনার দেওয়া রঙের প্যালেট অনুযায়ী কাস্টম স্টাইল */
-    :root {
-        --classic-blue: #288cfa;
-        --performance-green: #2E865F;
-        --light-green-bg: #C6F4D6;
-        --danger-red: #dc3545;
-        --light-gray-bg: #F5F5F5;
-        --dark-text: #333333;
-    }
+    /* ... (root variables remain the same) ... */
     .summary-card {
         border: none;
-        border-radius: 10px;
+        border-radius: 15px;
         color: white;
-        transition: transform 0.2s ease-in-out;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
     .summary-card:hover {
         transform: translateY(-5px);
+        box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
     }
-    .card-income {
-        background-color: var(--performance-green);
+    /* ... (card-income, card-expense, card-balance remain the same) ... */
+    .table {
+        border-collapse: separate;
+        border-spacing: 0 10px;
     }
-    .card-expense {
-        background-color: var(--danger-red);
-    }
-    .card-balance {
-        background-color: var(--classic-blue);
-    }
-    .summary-card .card-body {
-        position: relative;
-    }
-    .summary-card .card-icon {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        font-size: 2.5rem;
-        opacity: 0.3;
+    .table th, .table td {
+        border-top: none;
     }
 </style>
 

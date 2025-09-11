@@ -178,7 +178,7 @@ def manage_loans_view(request):
             return redirect('manage_loans')
 
     form = DebtForm()
-    loans = Debt.objects.filter(user=request.user).order_by('is_settled', '-due_date')
+    loans = Debt.objects.filter(user=request.user)
     
     context = {
         'form': form,

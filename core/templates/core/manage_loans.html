@@ -114,7 +114,7 @@
                                 <tr class="{% if loan.is_repaid %}repaid-row{% endif %}">
                                     <td class="ps-3 fw-medium">{{ loan.person_name }}</td>
                                     <td>${{ loan.amount|floatformat:2 }}</td>
-                                    <td>{{ loan.date_lent }}</td>
+                                    <td>{{ loan.due_date }}</td>
                                     <td>
                                         {% if loan.is_repaid %}
                                             <span class="badge rounded-pill status-repaid">Repaid</span>

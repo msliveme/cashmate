@@ -19,6 +19,7 @@ urlpatterns = [
 
     # --- ক্যাটাগরি (Category) সম্পর্কিত ---
     path('categories/', views.manage_categories_view, name='manage_categories'),
+    path('categories/edit/<int:pk>/', views.edit_category_view, name='edit_category'),
 
     # --- লোন (Loan) সম্পর্কিত ---
     path('loans/', views.manage_loans_view, name='manage_loans'),

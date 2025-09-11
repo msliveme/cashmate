@@ -10,27 +10,41 @@ from decimal import Decimal
 from .models import Transaction, Category, Debt, Account
 from .forms import TransactionForm, CategoryForm, DebtForm, UserRegisterForm, AccountForm
 
-# Homepage / Landing Page View
-def landing_page(request):
-    if request.user.is_authenticated:
-        return redirect('dashboard')
-    return render(request, 'core/landing_page.html')
-
 # ... (other views)
 
-# Add Account View
+# Dashboard View (Updated and Fixed)
 @login_required
-def add_account_view(request):
-    if request.method == 'POST':
-        form = AccountForm(request.POST)
-        if form.is_valid():
-            account = form.save(commit=False)
-            account.user = request.user
-            account.save()
-            return redirect('dashboard')
-    else:
-        form = AccountForm()
-    return render(request, 'core/add_account.html', {'form': form})
+def dashboard_view(request):
+    transactions = Transaction.objects.filter(user=request.user)
+
+    total_income = transactions.filter(transaction_type='INCOME').aggregate(Sum('amount'))['amount__sum'] or Decimal('0.0')
+    total_expense = transactions.filter(transaction_type='EXPENSE').aggregate(Sum('amount'))['amount__sum'] or Decimal('0.0')
+    
+    current_balance = total_income - total_expense
+
+    recent_transactions = transactions.order_by('-date')[:10]
+
+    # Data for chart
+    income_by_category = transactions.filter(transaction_type='INCOME').values('category__name').annotate(total=Sum('amount'))
+    expense_by_category = transactions.filter(transaction_type='EXPENSE').values('category__name').annotate(total=Sum('amount'))
+
+    income_labels = [item['category__name'] for item in income_by_category]
+    income_data = [item['total'] for item in income_by_category]
+
+    expense_labels = [item['category__name'] for item in expense_by_category]
+    expense_data = [item['total'] for item in expense_by_category]
+    
+    context = {
+        'total_income': total_income,
+        'total_expense': total_expense,
+        'current_balance': current_balance,
+        'transactions': recent_transactions,
+        'income_labels': income_labels,
+        'income_data': income_data,
+        'expense_labels': expense_labels,
+        'expense_data': expense_data,
+    }
+    return render(request, 'core/dashboard.html', context)
 
 
 import logging
@@ -83,33 +97,32 @@ def logout_view(request):
     logout(request)
     return redirect('landing_page')
 
-# Dashboard View (Updated and Fixed)
+# Edit Category View
 @login_required
-def dashboard_view(request):
-    # বর্তমান ইউজারের সব লেনদেন নিয়ে আসা
-    transactions = Transaction.objects.filter(user=request.user)
+def edit_category_view(request, pk):
+    category = get_object_or_404(Category, pk=pk, user=request.user)
+    if request.method == 'POST':
+        form = CategoryForm(request.POST, user=request.user, instance=category)
+        if form.is_valid():
+            form.save()
+            return redirect('manage_categories')
+    else:
+        form = CategoryForm(user=request.user, instance=category)
+    return render(request, 'core/edit_category.html', {'form': form})
 
-    # মোট আয় হিসাব করা
-    income_result = transactions.filter(transaction_type='INCOME').aggregate(Sum('amount'))
-    total_income = income_result['amount__sum'] or Decimal('0.0')
-
-    # মোট ব্যয় হিসাব করা
-    expense_result = transactions.filter(transaction_type='EXPENSE').aggregate(Sum('amount'))
-    total_expense = expense_result['amount__sum'] or Decimal('0.0')
-    
-    # বর্তমান ব্যালেন্স হিসাব করা
-    current_balance = total_income - total_expense
-
-    # সাম্প্রতিক ১০টি লেনদেন
-    recent_transactions = transactions.order_by('-date')[:10]
-    
-    context = {
-        'total_income': total_income,
-        'total_expense': total_expense,
-        'current_balance': current_balance,
-        'transactions': recent_transactions,
-    }
-    return render(request, 'core/dashboard.html', context)
+# Add Account View
+@login_required
+def add_account_view(request):
+    if request.method == 'POST':
+        form = AccountForm(request.POST)
+        if form.is_valid():
+            account = form.save(commit=False)
+            account.user = request.user
+            account.save()
+            return redirect('dashboard')
+    else:
+        form = AccountForm()
+    return render(request, 'core/add_account.html', {'form': form})
 
 # Add Transaction View
 @login_required

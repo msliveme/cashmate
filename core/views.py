@@ -1,5 +1,6 @@
 # core/views.py
 
+import logging
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -9,6 +10,13 @@ from django.db.models import Sum
 from decimal import Decimal
 from .models import Transaction, Category, Debt, Account
 from .forms import TransactionForm, CategoryForm, DebtForm, UserRegisterForm, AccountForm
+
+logger = logging.getLogger(__name__)
+
+def landing_page(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+    return render(request, 'core/landing_page.html')
 
 # ... (other views)
 
@@ -46,12 +54,6 @@ def dashboard_view(request):
     }
     return render(request, 'core/dashboard.html', context)
 
-
-import logging
-
-logger = logging.getLogger(__name__)
-
-# ... (other imports)
 
 # User Registration View
 def register_view(request):
